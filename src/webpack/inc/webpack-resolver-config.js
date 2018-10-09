@@ -1,5 +1,8 @@
+import _ from "lodash";
+
 const fs = require('fs');
 const path = require('path');
+
 
 const babelServer = require('./babel-server-rule')({
   cacheDirectory: false,
@@ -51,13 +54,21 @@ if (fs.existsSync(path.join(process.env.LIB_ROOT, '..', '..', '..', 'node_module
 
 const loaderResolver = commonResolvers.slice(0);
 loaderResolver.push(path.join(process.env.LIB_ROOT, 'src', 'webpack', 'loaders'));
+
+const projectRootPackage = require(`${process.env.PROJECT_ROOT}/package.json`);
+const moduleAliases = projectRootPackage.moduleAliases || {};
+
+_.map(Object.keys(moduleAliases),(alias)=>{
+   moduleAliases[alias] = `${process.env.PROJECT_ROOT}/${moduleAliases[alias]}`;
+});
+
 const resolver = {
   resolve: {
-    alias: {
-      pawjs: path.resolve(path.join(process.env.LIB_ROOT)),
-      pawProjectClient: projectClientExists ? projectClientPath : emptyClass,
-      pawProjectServer: projectServerExists ? projectServerPath : emptyClass,
-    },
+    alias: Object.assign({}, {
+        pawjs: path.resolve(path.join(process.env.LIB_ROOT)),
+        pawProjectClient: projectClientExists ? projectClientPath : emptyClass,
+        pawProjectServer: projectServerExists ? projectServerPath : emptyClass,
+    }, moduleAliases),
     modules: commonResolvers,
   },
   resolveLoader: {
