@@ -3,6 +3,6 @@
   "host": "localhost",
   "appRootUrl": "",
   "serviceWorker": false,
-  "serverSideRender": true,
-  "singlePageApplication": false
+  "serverSideRender": false,
+  "singlePageApplication": true
 }
