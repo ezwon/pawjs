@@ -8,7 +8,7 @@ import _ from 'lodash';
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 import { Router } from 'react-router';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { render, hydrate } from 'react-dom';
 import RouteHandler from '../router/handler';
@@ -191,7 +191,7 @@ export default class ClientHandler extends Tapable {
     }
 
     const AppRouter = (this.options.env.singlePageApplication && this.options.env.hashedRoutes)
-      ? HashRouter : Router;
+      ? BrowserRouter : Router;
 
     let RouterParams = {
       history: this.history,
